@@ -14,7 +14,7 @@ import ch.deluxxe.varia.dmeatinder.view.DMEAServlet;
 /**
  * Servlet implementation class DislikeServlet
  */
-@WebServlet("/api/dislike")
+@WebServlet("/api/dislike/*")
 public class DislikeServlet extends DMEAServlet {
 	private static final long serialVersionUID = 1L;
 	private DMEAApi dmea = null;
@@ -28,12 +28,12 @@ public class DislikeServlet extends DMEAServlet {
     }
 
     @Override
-	protected void doDelete(HttpServletRequest request, HttpServletResponse response, String userid) throws ServletException, IOException {
+	protected void doDelete(HttpServletRequest request, HttpServletResponse response, String info) throws ServletException, IOException {
 		System.out.println(super.getURIValue(request));
 		try {
 			String[] res = request.getRequestURI().split("/");
 			Integer id = Integer.valueOf(res[res.length -1]);
-			dmea.setDislike(id);
+			dmea.setDislike(id, info);
 			response.sendError(200, "event disliked");
 		} catch(Exception e) {
 			response.sendError(400, "invalid input, object invalid");

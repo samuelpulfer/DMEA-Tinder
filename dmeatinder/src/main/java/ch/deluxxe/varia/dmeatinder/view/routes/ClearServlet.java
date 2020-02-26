@@ -30,7 +30,7 @@ public class ClearServlet extends DMEAServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response, String info) throws ServletException, IOException {
 		try {
-			dmea.clear();
+			dmea.clear(info);
 			response.sendError(200, "events reset");
 		}catch(Exception e) {
 			response.sendError(400, "invalid input, object invalid");

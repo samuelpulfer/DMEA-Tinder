@@ -14,7 +14,7 @@ import ch.deluxxe.varia.dmeatinder.view.DMEAServlet;
 /**
  * Servlet implementation class LikeServlet
  */
-@WebServlet("/api/like")
+@WebServlet("/api/like/*")
 public class LikeServlet extends DMEAServlet {
 	private static final long serialVersionUID = 1L;
 	private DMEAApi dmea = null;
@@ -32,7 +32,7 @@ public class LikeServlet extends DMEAServlet {
 		try {
 			String[] res = request.getRequestURI().split("/");
 			Integer id = Integer.valueOf(res[res.length -1]);
-			dmea.setLike(id);
+			dmea.setLike(id, info);
 			response.sendError(200, "event liked");
 		} catch(Exception e) {
 			response.sendError(400, "invalid input, object invalid");

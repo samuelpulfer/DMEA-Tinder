@@ -28,8 +28,7 @@ private DataSource ds;
 
 	@Override
 	public JSONObject getList() {
-		// TODO Auto-generated method stub
-		return null;
+		return notYetImplemented();
 	}
 
 	@Override
@@ -41,32 +40,34 @@ private DataSource ds;
 
 	@Override
 	public JSONObject setLike(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		return notYetImplemented();
 	}
 
 	@Override
 	public JSONObject setSuperLike(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		return notYetImplemented();
 	}
 
 	@Override
 	public JSONObject setDislike(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		return notYetImplemented();
 	}
 
 	@Override
 	public JSONObject clear() {
-		// TODO Auto-generated method stub
-		return null;
+		return notYetImplemented();
 	}
 
 	@Override
 	public String getUserId(String userid) {
-		// TODO Auto-generated method stub
-		return null;
+		return "123456";
+	}
+	
+	private JSONObject notYetImplemented() {
+		JSONObject jo = new JSONObject();
+		jo.put("code", 0);
+		jo.put("message", "not yet implemented...");
+		return jo;
 	}
 
 }

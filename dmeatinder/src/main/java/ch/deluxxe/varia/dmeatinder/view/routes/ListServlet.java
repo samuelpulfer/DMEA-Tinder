@@ -28,7 +28,7 @@ public class ListServlet extends DMEAServlet {
     }
 
     @Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response, String info) throws ServletException, IOException {
 	
 		response.setHeader("Content-Type", "application/json");
 		response.getWriter().append(dmea.getList().toString());

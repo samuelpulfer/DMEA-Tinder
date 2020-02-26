@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ch.deluxxe.varia.dmeatinder.model.DMEAApiImpl;
 import ch.deluxxe.varia.dmeatinder.model.iface.DMEAApi;
 
 public abstract class DMEAServlet extends HttpServlet {
@@ -24,7 +25,7 @@ public abstract class DMEAServlet extends HttpServlet {
 	private static final String METHOD_POST = "POST";
 	private static final String METHOD_PUT = "PUT";
 	private static final String METHOD_TRACE = "TRACE";
-	
+
 	private boolean ALLOW_GET = false;
 	private boolean ALLOW_HEAD = false;
 	private boolean ALLOW_POST = false;
@@ -35,14 +36,16 @@ public abstract class DMEAServlet extends HttpServlet {
 
 	private String allowedMethods = null;
 	private DMEAApi dmea = null;
-	
+
 	public DMEAServlet() {
 		super();
 		getAllDeclaredMethods(this.getClass());
+		dmea = new DMEAApiImpl();
 	}
-	
+
 	/**
 	 * Gets all declared Methods of class c.
+	 * 
 	 * @param c The class which extends OAuthServlet.
 	 */
 	private void getAllDeclaredMethods(Class<? extends DMEAServlet> c) {
@@ -64,7 +67,7 @@ public abstract class DMEAServlet extends HttpServlet {
 			clazz = clazz.getSuperclass();
 		}
 
-		if(allMethods == null) {
+		if (allMethods == null) {
 			return;
 		}
 		for (int i = 0; i < allMethods.length; i++) {
@@ -127,8 +130,10 @@ public abstract class DMEAServlet extends HttpServlet {
 		}
 		this.allowedMethods = allow.toString();
 	}
-	
-	/** Sets allowed origin for CORS to *.
+
+	/**
+	 * Sets allowed origin for CORS to *.
+	 * 
 	 * @param resp
 	 */
 	protected void setCORS(HttpServletResponse resp) {
@@ -146,106 +151,134 @@ public abstract class DMEAServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		setCORS(resp);
-		if(!ALLOW_GET) {
+		if (!ALLOW_GET) {
 			super.doGet(req, resp);
 		}
 		String userid = cookiemonster(req, resp);
 		doGet(req, resp, userid);
 	}
 
-	/** Will be called after a doGet(HttpServletRequest req, HttpServletResponse resp) ONLY if doDelete(HttpServletRequest req, HttpServletResponse resp) was not overwritten! Override this function to handle GET request.
-	 * @param req The request.
+	/**
+	 * Will be called after a doGet(HttpServletRequest req, HttpServletResponse
+	 * resp) ONLY if doDelete(HttpServletRequest req, HttpServletResponse resp) was
+	 * not overwritten! Override this function to handle GET request.
+	 * 
+	 * @param req  The request.
 	 * @param resp The response.
 	 * @param info The OAuthInfo about the request.
 	 * @throws ServletException
 	 * @throws IOException
 	 */
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp, String userid) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp, String userid)
+			throws ServletException, IOException {
 
 	}
-	
+
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		setCORS(resp);
-		if(!ALLOW_POST) {
+		if (!ALLOW_POST) {
 			super.doPost(req, resp);
 		}
 		String userid = cookiemonster(req, resp);
 		doPost(req, resp, userid);
 	}
-	
-	/** Will be called after a doPost(HttpServletRequest req, HttpServletResponse resp) ONLY if doDelete(HttpServletRequest req, HttpServletResponse resp) was not overwritten! Override this function to handle POST request.
-	 * @param req The request.
+
+	/**
+	 * Will be called after a doPost(HttpServletRequest req, HttpServletResponse
+	 * resp) ONLY if doDelete(HttpServletRequest req, HttpServletResponse resp) was
+	 * not overwritten! Override this function to handle POST request.
+	 * 
+	 * @param req  The request.
 	 * @param resp The request.
 	 * @param info The OAuthInfo about the request.
 	 * @throws ServletException
 	 * @throws IOException
 	 */
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp, String userid) throws ServletException, IOException {
-		
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp, String userid)
+			throws ServletException, IOException {
+
 	}
-	
+
 	@Override
 	protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		setCORS(resp);
-		if(!ALLOW_PUT) {
+		if (!ALLOW_PUT) {
 			super.doPut(req, resp);
 		}
 		String userid = cookiemonster(req, resp);
 		doPut(req, resp, userid);
 	}
-	
-	/** Will be called after a doPut(HttpServletRequest req, HttpServletResponse resp) ONLY if doDelete(HttpServletRequest req, HttpServletResponse resp) was not overwritten! Override this function to handle PUT request.
-	 * @param req The request.
+
+	/**
+	 * Will be called after a doPut(HttpServletRequest req, HttpServletResponse
+	 * resp) ONLY if doDelete(HttpServletRequest req, HttpServletResponse resp) was
+	 * not overwritten! Override this function to handle PUT request.
+	 * 
+	 * @param req  The request.
 	 * @param resp The request.
 	 * @param info The OAuthInfo about the request.
 	 * @throws ServletException
 	 * @throws IOException
 	 */
-	protected void doPut(HttpServletRequest req, HttpServletResponse resp, String userid) throws ServletException, IOException {
-		
+	protected void doPut(HttpServletRequest req, HttpServletResponse resp, String userid)
+			throws ServletException, IOException {
+
 	}
 
 	@Override
 	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		setCORS(resp);
-		if(!ALLOW_DELETE) {
+		if (!ALLOW_DELETE) {
 			super.doPut(req, resp);
 		}
 		String userid = cookiemonster(req, resp);
 		doDelete(req, resp, userid);
 	}
-	
-	/** Will be called after a doDelete(HttpServletRequest req, HttpServletResponse resp) ONLY if doDelete(HttpServletRequest req, HttpServletResponse resp) was not overwritten! Override this function to handle DELETE request.
-	 * @param req The request.
+
+	/**
+	 * Will be called after a doDelete(HttpServletRequest req, HttpServletResponse
+	 * resp) ONLY if doDelete(HttpServletRequest req, HttpServletResponse resp) was
+	 * not overwritten! Override this function to handle DELETE request.
+	 * 
+	 * @param req  The request.
 	 * @param resp The request.
 	 * @param info The OAuthInfo about the request.
 	 * @throws ServletException
 	 * @throws IOException
 	 */
-	protected void doDelete(HttpServletRequest req, HttpServletResponse resp, String userid) throws ServletException, IOException {
-		
+	protected void doDelete(HttpServletRequest req, HttpServletResponse resp, String userid)
+			throws ServletException, IOException {
+
 	}
-	
+
 	protected String getURIValue(HttpServletRequest req) {
 		String[] res = req.getRequestURI().split("/");
-		return res[res.length -1];
+		return res[res.length - 1];
 	}
-	
+
 	private String cookiemonster(HttpServletRequest req, HttpServletResponse resp) {
 		String user = null;
 		Cookie[] cookies = req.getCookies();
-		for(Cookie c:cookies) {
-			if(c.getName().equals("user_session")) {
-				user = c.getValue();
+		if (cookies != null) {
+			for (Cookie c : cookies) {
+				if (c.getName().equals("user_session")) {
+					user = c.getValue();
+					System.out.println("Cookier found with value: " + user);
+				}
 			}
 		}
 		String userid = dmea.getUserId(user);
-		if(user == null) {
+		if (user == null) {
 			Cookie cookie = new Cookie("user_session", userid);
 			cookie.setDomain("dmea.deluxxe.ch");
 			cookie.setMaxAge(365 * 24 * 60 * 60);
 			resp.addCookie(cookie);
+
+			Cookie cookie2 = new Cookie("user_session", userid);
+			cookie2.setDomain("localhost");
+			cookie2.setMaxAge(365 * 24 * 60 * 60);
+			resp.addCookie(cookie2);
 		}
 		return userid;
 	}

@@ -32,7 +32,7 @@ public class ListServlet extends DMEAServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response, String info) throws ServletException, IOException {
 	
 		response.setHeader("Content-Type", "application/json");
-		response.getWriter().append(dmea.getList().toString());
+		response.getWriter().append(dmea.getList(info).toString());
 	}
     
     protected void doPost(HttpServletRequest request, HttpServletResponse response, String info) throws ServletException, IOException {

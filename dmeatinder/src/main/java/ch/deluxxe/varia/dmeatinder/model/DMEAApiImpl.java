@@ -73,7 +73,7 @@ private DataSource ds;
 				} else {
 					System.out.println("this should never happen...");
 				}
-				event.put("status", rs.getString("status"));
+				//event.put("status", rs.getString("status"));
 				event.put("externalLink", rs.getString("externallink"));
 				event.put("place", rs.getString("place"));
 				ja.put(event);

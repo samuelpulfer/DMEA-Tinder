@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import ch.deluxxe.varia.dmeatinder.model.DMEAApiImpl;
+import ch.deluxxe.varia.dmeatinder.model.Helper;
 import ch.deluxxe.varia.dmeatinder.model.iface.DMEAApi;
 import ch.deluxxe.varia.dmeatinder.view.DMEAServlet;
 
@@ -33,6 +34,11 @@ public class ListServlet extends DMEAServlet {
 		response.setHeader("Content-Type", "application/json");
 		response.getWriter().append(dmea.getList().toString());
 	}
+    
+    protected void doPost(HttpServletRequest request, HttpServletResponse response, String info) throws ServletException, IOException {
+    	response.setHeader("Content-Type", "application/json");
+		response.getWriter().append(dmea.setList(Helper.requestToJSONArray(request)).toString());
+    }
 
 
 	

@@ -264,22 +264,24 @@ public abstract class DMEAServlet extends HttpServlet {
 			for (Cookie c : cookies) {
 				if (c.getName().equals("user_session")) {
 					user = c.getValue();
-					System.out.println("Cookier found with value: " + user);
+					//System.out.println("Cookier found with value: " + user);
 				}
 			}
 		}
 		String userid = dmea.getUserId(user);
-		if (user == null) {
-			Cookie cookie = new Cookie("user_session", userid);
-			cookie.setDomain("dmea.deluxxe.ch");
-			cookie.setMaxAge(365 * 24 * 60 * 60);
-			resp.addCookie(cookie);
 
-			Cookie cookie2 = new Cookie("user_session", userid);
-			cookie2.setDomain("localhost");
-			cookie2.setMaxAge(365 * 24 * 60 * 60);
-			resp.addCookie(cookie2);
-		}
+		Cookie cookie = new Cookie("user_session", userid);
+		cookie.setDomain("dmea.deluxxe.ch");
+		cookie.setPath("/");
+		cookie.setMaxAge(365 * 24 * 60 * 60);
+		resp.addCookie(cookie);
+
+		Cookie cookie2 = new Cookie("user_session", userid);
+		cookie2.setDomain("localhost");
+		cookie2.setPath("/");
+		cookie2.setMaxAge(365 * 24 * 60 * 60);
+		resp.addCookie(cookie2);
+
 		return userid;
 	}
 }

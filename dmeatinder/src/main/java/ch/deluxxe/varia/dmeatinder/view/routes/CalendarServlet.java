@@ -32,9 +32,10 @@ public class CalendarServlet extends DMEAServlet {
 		setCORS(response);
 		try {
 			response.setHeader("Content-Type", "text/calendar");
-			String calendar = dmea.getCalendar();
+			String calendar = dmea.getCalendar(info);
 			response.getWriter().append(calendar);
 		} catch(Exception e) {
+			e.printStackTrace();
 			response.sendError(500, "could not create calendar");
 		}
 		

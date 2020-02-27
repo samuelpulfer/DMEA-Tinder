@@ -14,7 +14,7 @@ import ch.deluxxe.varia.dmeatinder.view.DMEAServlet;
 /**
  * Servlet implementation class SuperLikeServlet
  */
-@WebServlet("/api/superlike")
+@WebServlet("/api/superlike/*")
 public class SuperLikeServlet extends DMEAServlet {
 	private static final long serialVersionUID = 1L;
 	private DMEAApi dmea = null;
@@ -33,7 +33,7 @@ public class SuperLikeServlet extends DMEAServlet {
 		try {
 			String[] res = request.getRequestURI().split("/");
 			Integer id = Integer.valueOf(res[res.length -1]);
-			dmea.setSuperLike(id);
+			dmea.setSuperLike(id, info);
 			response.sendError(200, "event superliked");
 		} catch(Exception e) {
 			response.sendError(400, "invalid input, object invalid");

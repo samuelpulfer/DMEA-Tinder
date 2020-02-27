@@ -35,6 +35,7 @@ public class CalendarServlet extends DMEAServlet {
 			String calendar = dmea.getCalendar(info);
 			response.getWriter().append(calendar);
 		} catch(Exception e) {
+			e.printStackTrace();
 			response.sendError(500, "could not create calendar");
 		}
 		

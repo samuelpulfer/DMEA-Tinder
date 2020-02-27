@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.sql.Types;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -21,14 +20,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import ch.deluxxe.varia.dmeatinder.model.iface.DMEAApi;
-import net.fortuna.ical4j.model.Calendar;
-import net.fortuna.ical4j.model.TimeZone;
-import net.fortuna.ical4j.model.TimeZoneRegistry;
-import net.fortuna.ical4j.model.TimeZoneRegistryFactory;
-import net.fortuna.ical4j.model.component.VEvent;
-import net.fortuna.ical4j.model.property.CalScale;
-import net.fortuna.ical4j.model.property.ProdId;
-import net.fortuna.ical4j.model.property.Version;
+import ch.deluxxe.varia.dmeatinder.model.iface.Kalender;
 
 public class DMEAApiImpl implements DMEAApi {
 	
@@ -64,7 +56,6 @@ private DataSource ds;
 				event.put("name", rs.getString("name"));
 				event.put("description", rs.getString("description"));
 				ZonedDateTime zdt = ZonedDateTime.of(rs.getTimestamp("starttime").toLocalDateTime(), ZoneId.of("UTC"));
-				
 				event.put("startTime", zdt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX")));
 				zdt = ZonedDateTime.of(rs.getTimestamp("endtime").toLocalDateTime(), ZoneId.of("UTC"));
 				event.put("endTime", zdt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX")));
@@ -96,17 +87,26 @@ private DataSource ds;
 	@Override
 	public String getCalendar(String userid) {
 		System.out.println("calendar");
-		
+		Kalender cal = new KalenderImpl();
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
+		System.out.println("Userid: " + userid);
 		try {
 			conn = ds.getConnection();
 			ps = conn.prepareStatement("SELECT * FROM calendar WHERE userid=?");
 			ps.setString(1, userid);
 			rs = ps.executeQuery();
 			while(rs.next()) {
-				// Create event
+				if(rs.getInt("state") == 1) {
+					ZonedDateTime start = ZonedDateTime.of(rs.getTimestamp("starttime").toLocalDateTime(), ZoneId.of("UTC"));
+					ZonedDateTime end = ZonedDateTime.of(rs.getTimestamp("endtime").toLocalDateTime(), ZoneId.of("UTC"));
+					cal.add(start, end, rs.getString("name"), rs.getString("description"), "LIKE", rs.getString("place"), rs.getString("externallink"));
+				} else if(rs.getInt("state") == 2) {
+					ZonedDateTime start = ZonedDateTime.of(rs.getTimestamp("starttime").toLocalDateTime(), ZoneId.of("UTC"));
+					ZonedDateTime end = ZonedDateTime.of(rs.getTimestamp("endtime").toLocalDateTime(), ZoneId.of("UTC"));
+					cal.add(start, end, rs.getString("name"), rs.getString("description"), "SUPERLIKE", rs.getString("place"), rs.getString("externallink"));
+				}
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -125,11 +125,8 @@ private DataSource ds;
 			} catch (Exception e) {
 			}
 		}
-		JSONObject jo = new JSONObject();
-		jo.put("code", 0);
-		jo.put("message", "deleted");
-		//return jo;
-		return "This should be an calendar...";
+		cal.getCalendar();
+		return cal.getCalendar();
 		
 	}
 
@@ -230,13 +227,6 @@ private DataSource ds;
 		}
 		
 		return user;
-	}
-	
-	private JSONObject notYetImplemented() {
-		JSONObject jo = new JSONObject();
-		jo.put("code", 0);
-		jo.put("message", "not yet implemented...");
-		return jo;
 	}
 
 	@Override

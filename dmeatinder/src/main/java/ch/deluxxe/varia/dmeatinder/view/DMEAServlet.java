@@ -278,7 +278,7 @@ public abstract class DMEAServlet extends HttpServlet {
 
 		Cookie cookie2 = new Cookie("user_session", userid);
 		cookie2.setDomain("localhost");
-		cookie.setPath("/");
+		cookie2.setPath("/");
 		cookie2.setMaxAge(365 * 24 * 60 * 60);
 		resp.addCookie(cookie2);
 

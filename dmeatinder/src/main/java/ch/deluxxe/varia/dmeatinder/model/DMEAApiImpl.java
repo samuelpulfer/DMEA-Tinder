@@ -40,7 +40,7 @@ private DataSource ds;
 	}
 
 	@Override
-	public JSONArray getList() {
+	public JSONArray getList(String userid) {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -48,7 +48,9 @@ private DataSource ds;
 		
 		try {
 			conn = ds.getConnection();
-			ps = conn.prepareStatement("SELECT * FROM event WHERE deleted IS NULL");
+			//ps = conn.prepareStatement("SELECT * FROM event WHERE deleted IS NULL");
+			ps = conn.prepareStatement("SELECT * FROM userevent(?)");
+			ps.setString(1, userid);
 			rs = ps.executeQuery();
 			while(rs.next()) {
 				JSONObject event = new JSONObject();
@@ -59,7 +61,19 @@ private DataSource ds;
 				event.put("startTime", zdt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX")));
 				zdt = ZonedDateTime.of(rs.getTimestamp("endtime").toLocalDateTime(), ZoneId.of("UTC"));
 				event.put("endTime", zdt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX")));
-				event.put("status", rs.getString("status"));
+				int state = rs.getInt("state");
+				if(state == 0) {
+					event.put("status", "unrated");
+				} else if(state == 1) {
+					event.put("status", "disliked");
+				} else if(state == 2) {
+					event.put("status", "liked");
+				} else if(state == 3) {
+					event.put("status", "superliked");
+				} else {
+					System.out.println("this should never happen...");
+				}
+				//event.put("status", rs.getString("status"));
 				event.put("externalLink", rs.getString("externallink"));
 				event.put("place", rs.getString("place"));
 				ja.put(event);
@@ -98,11 +112,11 @@ private DataSource ds;
 			ps.setString(1, userid);
 			rs = ps.executeQuery();
 			while(rs.next()) {
-				if(rs.getInt("state") == 1) {
+				if(rs.getInt("state") == 2) {
 					ZonedDateTime start = ZonedDateTime.of(rs.getTimestamp("starttime").toLocalDateTime(), ZoneId.of("UTC"));
 					ZonedDateTime end = ZonedDateTime.of(rs.getTimestamp("endtime").toLocalDateTime(), ZoneId.of("UTC"));
 					cal.add(start, end, rs.getString("name"), rs.getString("description"), "LIKE", rs.getString("place"), rs.getString("externallink"));
-				} else if(rs.getInt("state") == 2) {
+				} else if(rs.getInt("state") == 3) {
 					ZonedDateTime start = ZonedDateTime.of(rs.getTimestamp("starttime").toLocalDateTime(), ZoneId.of("UTC"));
 					ZonedDateTime end = ZonedDateTime.of(rs.getTimestamp("endtime").toLocalDateTime(), ZoneId.of("UTC"));
 					cal.add(start, end, rs.getString("name"), rs.getString("description"), "SUPERLIKE", rs.getString("place"), rs.getString("externallink"));
@@ -133,19 +147,19 @@ private DataSource ds;
 	@Override
 	public JSONObject setLike(int id, String userid) {
 		System.out.println("like");
-		return updatePreference(id,userid,1);
+		return updatePreference(id,userid,2);
 	}
 
 	@Override
 	public JSONObject setSuperLike(int id, String userid) {
 		System.out.println("superlike");
-		return updatePreference(id,userid,2);
+		return updatePreference(id,userid,3);
 	}
 
 	@Override
 	public JSONObject setDislike(int id, String userid) {
 		System.out.println("dislike");
-		return updatePreference(id,userid,0);
+		return updatePreference(id,userid,1);
 	}
 
 	@Override

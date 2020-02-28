@@ -1,0 +1,183 @@
+*, *:after, *:before {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Open Sans", sans-serif;
+    padding: 0;
+    margin: 0;
+    background-color: rgb(245, 247, 250);
+}
+
+nav {
+    background-color: #872557;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    padding: 0;
+    margin: 0;
+}
+
+nav ul li {
+    display: inline-block;
+    width: 50%;
+    text-align: center;
+}
+
+nav li a {
+    padding: 10px 0;
+    display: block;
+    color: #fff;
+    text-decoration: none;
+}
+
+
+.card:after {
+    content: '';
+    display: block;
+    position: absolute;
+    right: 50%;
+    margin-right: -67px;
+    top: 78px;
+    width: 134px;
+    padding: 29px 0;
+    text-align: center;
+    font-size: 66px;
+    border: 5px solid;
+    border-radius: 100%;
+    opacity: 0;
+    font-weight: bold;
+    background: #ffffffe3;
+    font-family: "Font Awesome 5 Pro";
+}
+
+.card a {
+    text-decoration: none;
+    font-size: 14px;
+    color: #2980b9;
+}
+
+.card.up:after {
+    content: '\f005';
+    color: #2980b9;
+    opacity: 1;
+}
+
+.card.right:after {
+    opacity: 1;
+    content: '\f004';
+    color: #2ecc71;
+    line-height: 1;
+}
+
+.card.left:after {
+
+    line-height: 1;
+    opacity: 1;
+    content: '\f7a9';
+    color: #c0392b;
+}
+
+#board {
+    width: 100%;
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+    margin: auto;
+}
+
+
+.card h2 {
+    margin-top: 0;
+    font-size: 18px;
+}
+
+.card .description {
+    font-size: 12px;
+    text-overflow: ellipsis;
+    max-height: 52%;
+    overflow: hidden;
+}
+
+.card {
+    overflow: hidden;
+    width: 80vw;
+    height: 60vh;
+    position: absolute;
+    top: 50vh;
+    left: 50%;
+    border-radius: 1%;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    transform: translateX(-50%) translateY(-50%) scale(1) rotate(4deg);
+    padding: 10px;
+    word-break: break-word;
+    max-width: 324px;
+    max-height: 500px;
+}
+
+#overview {
+    width: 100%;
+    max-width: 600px;
+    margin: 15vh auto 0;
+    color: #000;
+    border-radius: 1%;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    padding: 10px;
+}
+
+#overview h2 {
+    margin:0;
+}
+
+.btn {
+    color: #fff;
+    background: #2980b9;
+    border-radius: 4px;
+    text-decoration: none;
+    padding: 10px 15px;
+    display: inline-block;
+}
+
+.clear {
+    background: #c0392b;
+}
+
+.logo {
+    top:0;
+    position: fixed;
+    left: 50%;
+    max-width: 300px;
+    width: 300px;
+    display: block;
+    margin-left: -150px;
+    margin-top: 30px;
+}
+
+.hidden {
+    display: none;
+}
+
+nav ul li a.active {
+    background: #0000004f;
+}
+
+.card.full {
+    width: 100vw;
+    height: 90vh;
+    max-width: 400px;
+    max-height: 600px;
+    top: 47vh;
+    z-index: 100;
+}
+
+.card.full .description {
+    max-height: 100%;
+}

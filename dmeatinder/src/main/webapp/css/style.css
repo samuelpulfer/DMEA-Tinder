@@ -133,11 +133,16 @@ nav li a {
     padding: 10px;
 }
 
+#overview a {
+    text-decoration: none;
+    color: #2980b9;
+}
+
 #overview h2 {
     margin:0;
 }
 
-.btn {
+#overview a.btn {
     color: #fff;
     background: #2980b9;
     border-radius: 4px;
@@ -146,8 +151,18 @@ nav li a {
     display: inline-block;
 }
 
-.clear {
+#overview a.clear {
     background: #c0392b;
+}
+
+.heart {
+    color: #ed0000;
+}
+.js {
+    color: #f7df1e;
+}
+.java {
+    color: #2980b9;
 }
 
 .logo {
